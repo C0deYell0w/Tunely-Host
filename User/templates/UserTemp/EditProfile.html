@@ -1,0 +1,113 @@
+{% extends 'UserTemp/User_Index.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tunely</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cantora+One&family=Roboto:wght@900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'UsrAssets/css/style.css ' %}"/>
+
+</head>
+<body>
+<div class="page-container-edit" >
+    <form action="{% url 'User:UpdateProfile' USR.id %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="banner-img-container">
+            {% if USR.bannerimage %}
+                <div class="image-addnew-banner">
+                    <input type="file" name="banner-img" accept="image/*" id="bannerinput">
+                    <div class="edit-idon-image-banner">
+                        <i class="bi bi-pen"></i>
+                    </div>
+                </div>
+                <img src="{{ USR.bannerimage.url }}" alt="" id="currentbannerimage">
+            {% else %}
+                <div class="image-addnew-banner">
+                    <input type="file" name="banner-img" accept="image/*" id="bannerinput">
+                    <div class="edit-idon-image-banner">
+                        <i class="bi bi-pen"></i>
+                    </div>
+                </div>
+                <img src="{% static 'CrAssets/img/bannerdefault.jpg ' %}" alt="" id="currentbannerimage">
+            {% endif %}
+            <img src="#" style=" top: 1rem;" alt="Selected Image" id="selectedbannerImage">
+        </div>
+
+        <div class="profile-body-edits">
+                <div class="profile-image-edit">
+                    {% if USR.picture %}
+                        <div class="image-addnew">
+                            <input type="file" name="profile-img" accept="image/*" id="fileInput">
+                            <div class="edit-idon-image">
+                                <i class="bi bi-pen"></i>
+                            </div>
+                        </div>
+                        <img src="{{ USR.picture.url }}" alt="" id="currentimage">
+                    {% else %}
+                        <div class="image-addnew">
+                            <input type="file" name="profile-img" accept="image/*" id="fileInput">
+                            <div class="edit-idon-image">
+                                <i class="bi bi-pen"></i>
+                            </div>
+                        </div>
+                        <img src="{% static 'CrAssets/img/profiledefault.jpg ' %}" alt="" id="currentimage">
+                    {% endif %}
+                    <img src="#" alt="Selected Image" id="selectedNewImage">
+
+                </div>
+                <div class="creator-info-edit">
+                    <label for="">User Name</label>
+                    <input type="text" name="usrname" id="" value="{{USR.usr_name}}" ><br>
+                    <label for="">Name </label>
+                    <input type="text" name="name" id="" value="{{USR.name}}" required=""><br> 
+                </div>
+                <div class="profile-data-edits-updates">
+                    <a href="#"> <button type="submit">Save</button></a>
+                </div>
+        </div>
+    </form>
+</div>
+<script>
+document.getElementById('fileInput').addEventListener('change', function(event) {
+    const selectedImage = document.getElementById('selectedNewImage');
+    const currentImage = document.getElementById('currentimage');
+    const file = event.target.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            selectedImage.src = e.target.result;
+            currentImage.src = e.target.result; 
+        };
+        reader.readAsDataURL(file);
+    } else {
+        selectedImage.src = '#';
+    }
+});
+
+document.getElementById('bannerinput').addEventListener('change', function(event) {
+        const selectedImage = document.getElementById('selectedbannerImage');
+        const currentImage = document.getElementById('currentbannerimage');
+        const file = event.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                selectedImage.src = e.target.result;
+                currentImage.src = e.target.result; 
+            };
+            reader.readAsDataURL(file);
+        } else {
+            selectedImage.src = '#';
+        }
+    });
+
+</script>
+</body>
+</html>
+{% endblock content %}
